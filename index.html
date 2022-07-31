@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<title></title>
+	<style type="text/css">
+		.error {
+			color: red;
+		}
+		.c1 {
+			border: 2px red ridge;
+		}
+		.c2 {
+			border: 2px green ridge;
+		}
+	</style>
+</head>
+<body>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-4 mx-auto">
+				<form id="form1" action="">
+					<input type="text" name="myName" id="myName" placeholder="Enter you name" class="form-control">
+					</br>
+					<input type="text" name="email" id="email" placeholder="Enter you email" class="form-control">
+					</br>
+					<input type="text" name="pass" id="pass" placeholder="Enter you password" class="form-control">
+					</br>
+					<input type="text" name="cpass" id="cpass" placeholder="Enter you confirm password" class="form-control">
+					</br>
+					<input type="text" name="fname" id="fname" placeholder="Enter you first name" class="form-control">
+					</br>
+					<input type="text" name="letter" id="letter" placeholder="Enter you letter only" class="form-control">
+					</br>
+					<input type="text" name="alphabets" id="alphabets" placeholder="Enter you alphabets only" class="form-control">
+					</br>
+					<input type="text" name="punchuation" id="punchuation" placeholder="Enter you punchuation only" class="form-control">
+					</br>
+					<input type="text" name="url" id="url" placeholder="Enter you url only" class="form-control">
+					</br>
+					<input type="text" name="num1" id="num1" placeholder="Enter you number only" class="form-control">
+					<input type="hidden" name="data" id="data" value="5">
+					</br>
+					<fieldset>
+						<legend>Gender</legend>
+						<input type="radio" name="gender[]" value="Male">Male </br>
+						<input type="radio" name="gender[]" value="Female">Female</br>
+						<label for="gender[]" class="error" style="display: none;"></label>
+					</fieldset>
+					<input type="checkbox" name="check" id="check"> Accept Turm
+					<label for="check" style="display:none;" class="error"></label>
+
+					<input type="text" name="age" id="age" placeholder="Enter you age only" class="form-control">
+					</br>
+					<input type="text" name="number" id="number" placeholder="Enter you number only" class="form-control">
+					</br>
+					<input type="text" name="dob" id="dob" placeholder="yyyy-mm-dd" class="form-control">
+					</br>
+					<input type="submit" value="Submit" class="btn btn-info btn-block">
+				</form>
+				<h1 id="summary"></h1>
+			</div>
+		</div>
+	</div>
+
+
+
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery-validation/dist/jquery.validate.min.js"></script>
+<script type="text/javascript" src="jquery-validation/dist/additional-methods.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		// create your own rule for validation
+		$.validator.addMethod("StrongPassword", function(value) {
+			return /((?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$)/.test(value);
+		}, "Please enter Strong Password");
+
+		$("#form1").validate({
+			rules:{
+				myName:{
+					required:true,
+					minlength:3,
+					minlength:15
+				},
+				email: {
+					required:true,
+					email:true
+				},
+				pass : {
+					required:true,
+					StrongPassword:true
+				},
+				cpass : {
+					required:true,
+					equalTo:"#pass"				// here pas id of comapre text value
+				},
+				fname:{
+					required:true,
+					nowhitespace:true
+				},
+				letter : {
+					required: true,
+					lettersonly:true
+				},
+				alphabets : {
+					required:true,
+					alphanumeric:true
+				},
+				punchuation : {
+					required:true,
+					letterswithbasicpunc:true
+				},
+				url : {
+					required:true,
+					url:true
+				},
+				num1 : {
+					required:true,
+					// lessThan:"#data" 	// get value from hidden field	
+					lessThanEqual:"#data" 	// get value from hidden field	
+				},
+				// vaidate radion input
+				'gender[]' : {
+					required:true
+				},
+				check: {
+					required:true,
+				},
+				age: {
+					required:true,
+					range:[10,50]
+				},
+				number: {
+					required:true,
+					number:true				// accept point with number
+					// digits: true			it is only accept only digits number not point value
+				},
+				dob: {
+					required:true,
+				},
+			},
+			highlight : function(element) {
+				$(element).addClass("c1");
+				$(element).removeClass("c2");
+			},
+			unhighlight : function(element) {
+				// $(element).removeClass("c1");
+				$(element).addClass("c2");
+			},
+			invalidHandler: function(element) {
+				var validator = $("#form1").validate();
+				$("#summary").text(validator.numberOfInvalids() + "fiels are invalid");
+			},
+			messages : {
+				myName : {
+					required:"Name can not blank",
+					minlength:"3 Character is must"
+				},
+				email : {
+					required:"Eamil can not blac"
+				},
+				cpass : {
+					required:"Confirm passowrd not match",
+					equalTo:"Both passowrd not identical"
+				}
+			}
+		});
+	})
+</script>
+</body> 
+</html>
